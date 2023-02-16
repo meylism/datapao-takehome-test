@@ -11,6 +11,12 @@ public class IMDBMovie {
     @Getter
     private Double rating;
     @Getter
+    private Double penalizedRating;
+    @Getter
+    private Double oscarInfluencedRating;
+    @Getter
+    private Double newRating;
+    @Getter
     private Long numRating;
     @Getter
     private Integer numOscar;
@@ -28,6 +34,21 @@ public class IMDBMovie {
     public void setNumRating(Long numRating) {
         Preconditions.checkArgument(numRating >= 0);
         this.numRating = numRating;
+    }
+
+    public void setPenalizedRating(Double penalizedRating) {
+        Preconditions.checkArgument(penalizedRating >= 0.0);
+        this.penalizedRating = penalizedRating;
+    }
+
+    public void setOscarInfluencedRating(Double oscarInfluencedRating) {
+        Preconditions.checkArgument(oscarInfluencedRating >= 0.0);
+        this.oscarInfluencedRating = oscarInfluencedRating;
+    }
+
+    public void setNewRating(Double newRating) {
+        Preconditions.checkArgument(newRating >= 0.0);
+        this.newRating = newRating;
     }
 
     public void setNumOscar(Integer numOscar) {
