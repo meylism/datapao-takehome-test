@@ -17,9 +17,9 @@ public class IMDBFacade extends Facade {
     @Override
     public void scrape() {
         Scraper scraper = new IMDBScraper(getUrl());
-        ScrapeResult<List<IMDBMovie>> result = scraper.scrape();
+        ScrapeResult result = (ScrapeResult)scraper.scrape();
 
-        List<IMDBMovie> movieList = result.getData();
+        List<IMDBMovie> movieList = (List<IMDBMovie>) result.getData();
         for (IMDBMovie movie : movieList) {
             System.out.println(movie);
 

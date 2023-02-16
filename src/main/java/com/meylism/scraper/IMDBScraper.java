@@ -14,19 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IMDBScraper extends Scraper {
-    private final Logger LOG = LogManager.getLogger(IMDBScraper.class);
+    private final Logger logger = LogManager.getLogger(IMDBScraper.class);
     public IMDBScraper(String url) {
         super(url);
     }
 
     @Override
-    public ScrapeResult<List<IMDBMovie>> scrape() {
-        ScrapeResult<List<IMDBMovie>> result = new ScrapeResult<>();
+    public ScrapeResult scrape() {
+        ScrapeResult result = new ScrapeResult();
         Document doc = null;
         List<IMDBMovie> movieList = new ArrayList<>();
 
         try {
-            LOG.debug("Started fetching {}", getUrl());
+            logger.debug("Started fetching {}", getUrl());
             long startTime = System.currentTimeMillis();
 
             doc = Jsoup.connect(getUrl())
@@ -34,10 +34,10 @@ public class IMDBScraper extends Scraper {
                     .get();
 
             long elapsedTime = System.currentTimeMillis() - startTime;
-            LOG.debug("Finished fetching: took {} milliseconds", elapsedTime);
+            logger.debug("Finished fetching: took {} milliseconds", elapsedTime);
             result.setScrapeTime(elapsedTime);
         } catch (IOException e) {
-            LOG.fatal("Can't scrape the provided URL: {}", e.getMessage());
+            logger.fatal("Can't scrape the provided URL: {}", e.getMessage());
             System.exit(-1);
         }
 
@@ -96,7 +96,7 @@ public class IMDBScraper extends Scraper {
         Document doc = null;
 
         try {
-            LOG.debug("Started fetching {}", awardUrl);
+            logger.debug("Started fetching {}", awardUrl);
             long startTime = System.currentTimeMillis();
 
             doc = Jsoup.connect(awardUrl)
@@ -104,9 +104,9 @@ public class IMDBScraper extends Scraper {
                     .get();
 
             long elapsedTime = System.currentTimeMillis() - startTime;
-            LOG.debug("Finished fetching: took {} milliseconds", elapsedTime);
+            logger.debug("Finished fetching: took {} milliseconds", elapsedTime);
         } catch (IOException e) {
-            LOG.fatal("Can't scrape the provided URL: {}", e.getMessage());
+            logger.fatal("Can't scrape the provided URL: {}", e.getMessage());
             System.exit(-1);
         }
 

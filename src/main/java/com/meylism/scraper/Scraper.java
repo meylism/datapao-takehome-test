@@ -1,10 +1,7 @@
 package com.meylism.scraper;
 
-import com.meylism.ds.ScrapeResult;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.IOException;
 
 /**
  * Abstract class for scrapers
@@ -21,5 +18,5 @@ public abstract class Scraper {
      * Scrape the provided url and return result
      * @return result of scraping
      */
-    public abstract ScrapeResult scrape();
+    public abstract Object scrape();
 }
