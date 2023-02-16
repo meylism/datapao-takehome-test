@@ -9,5 +9,4 @@ public class Main {
         logger.debug("debug log");
         logger.warn("warn log");
     }
-
 }
