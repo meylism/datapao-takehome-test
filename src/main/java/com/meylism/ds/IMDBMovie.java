@@ -2,14 +2,16 @@ package com.meylism.ds;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public class IMDBMovie {
     @Getter
     private String title;
     @Getter
     private Double rating;
     @Getter
-    private Integer numRating;
+    private Long numRating;
     @Getter
     private Integer numOscar;
 
@@ -23,7 +25,7 @@ public class IMDBMovie {
         this.rating = rating;
     }
 
-    public void setNumRating(Integer numRating) {
+    public void setNumRating(Long numRating) {
         Preconditions.checkArgument(numRating >= 0);
         this.numRating = numRating;
     }

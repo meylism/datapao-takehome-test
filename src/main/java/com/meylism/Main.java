@@ -5,8 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        Logger logger = LogManager.getLogger(Main.class);
-        logger.debug("debug log");
-        logger.warn("warn log");
+        Facade facade = new IMDBFacade("https://www.imdb.com/chart/top/");
+        facade.scrape();
     }
 }
