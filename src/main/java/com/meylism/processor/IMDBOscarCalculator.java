@@ -13,7 +13,7 @@ import java.util.List;
  * 6 to 10 oscars → 1 point
  * 10+ oscars → 1.5 point
  */
-public class IMDBOscarCalculator extends Processor{
+public class IMDBOscarCalculator implements Processor{
     @Override
     public void process(ScrapeResult result) {
         List<IMDBMovie> movieList = (List<IMDBMovie>) result.getData();

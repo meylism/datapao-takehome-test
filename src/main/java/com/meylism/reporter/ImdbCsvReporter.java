@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class ImdbCsvReporter extends FileReporter {
+public class ImdbCsvReporter implements FileReporter {
     private final Logger logger = LogManager.getLogger(ImdbCsvReporter.class);
     private final String[] headers = {"Title", "Number of Ratings", "Number of Oscars", "Original Rating",
             "New Rating", "Oscar Rating", "Penalized Rating"};
@@ -35,7 +35,6 @@ public class ImdbCsvReporter extends FileReporter {
                         String.format("%.1f", movie.getOscarInfluencedRating()),
                         String.format("%.1f", movie.getPenalizedRating()));
             }
-
             printer.close();
             out.close();
         } catch (IOException e) {

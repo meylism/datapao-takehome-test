@@ -9,7 +9,7 @@ import java.io.File;
 import java.nio.file.Path;
 
 public class Main {
-    private static Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
         Preconditions.checkArgument(args.length <= 1, "Extra arguments are given");
@@ -19,7 +19,7 @@ public class Main {
             // handle home directory
             file = new File(args[0].replaceFirst("^~", System.getProperty("user.home")));
             if (!file.exists()) {
-                logger.error("Given path doesn't exist: {}", file.toString());
+                logger.error("Given path doesn't exist: {}", file);
                 System.exit(-1);
             }
         } else {

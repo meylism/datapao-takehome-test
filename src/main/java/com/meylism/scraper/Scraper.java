@@ -27,6 +27,11 @@ public abstract class Scraper {
      */
     public abstract Object scrape();
 
+    /**
+     * Fetches the given url and turns it to jsoup Document
+     * @param url url from where to fetch data
+     * @return jsoup Document
+     */
     public Document fetch(String url) {
         Document doc = null;
         try {

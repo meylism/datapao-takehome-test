@@ -34,9 +34,11 @@ public class IMDBScraper extends Scraper {
         // tbody
         Element chartBody = chart.get(0).child(2);
 
+        logger.debug("Started processing scraped data");
         for(int i=0; i<numMoviesToFetch; i++) {
             movieList.add(processMovie(chartBody.child(i)));
         }
+        logger.debug("Finished processing scraped data");
 
         // data is a list of movies
         result.setData(movieList);

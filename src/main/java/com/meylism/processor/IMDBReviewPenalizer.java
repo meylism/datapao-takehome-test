@@ -14,7 +14,7 @@ import java.util.List;
  * maximum translates to a point deduction of 0.1.
  */
 
-public class IMDBReviewPenalizer extends Processor {
+public class IMDBReviewPenalizer implements Processor {
     @Override
     public void process(ScrapeResult result) {
         List<IMDBMovie> movieList = (List<IMDBMovie>) result.getData();
@@ -47,6 +47,4 @@ public class IMDBReviewPenalizer extends Processor {
         }
         return max;
     }
-
-
 }
