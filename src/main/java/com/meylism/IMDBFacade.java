@@ -5,7 +5,8 @@ import com.meylism.ds.ScrapeResult;
 import com.meylism.processor.IMDBOscarCalculator;
 import com.meylism.processor.IMDBReviewPenalizer;
 import com.meylism.processor.Processor;
-import com.meylism.reporter.Reporter;
+import com.meylism.reporter.FileReporter;
+import com.meylism.reporter.ImdbCsvReporter;
 import com.meylism.scraper.IMDBScraper;
 import com.meylism.scraper.Scraper;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +19,7 @@ import java.util.List;
 public class IMDBFacade extends Facade {
     private final Logger logger = LogManager.getLogger(IMDBFacade.class);
     private final List<Processor> processors = new ArrayList<>(Arrays.asList(new IMDBOscarCalculator(), new IMDBReviewPenalizer()));
+    private ScrapeResult result;
 
     public IMDBFacade(String url) {
         super(url);
@@ -26,7 +28,7 @@ public class IMDBFacade extends Facade {
     @Override
     public void scrape() {
         Scraper scraper = new IMDBScraper(getUrl());
-        ScrapeResult result = (ScrapeResult)scraper.scrape();
+        result = (ScrapeResult)scraper.scrape();
 
         List<IMDBMovie> movieList = (List<IMDBMovie>) result.getData();
         for (IMDBMovie movie : movieList) {
@@ -47,7 +49,8 @@ public class IMDBFacade extends Facade {
     }
 
     @Override
-    public void report(Reporter reporter) {
-
+    public void report(FileReporter reporter) {
+        ImdbCsvReporter imdbCsvReporter = new ImdbCsvReporter(this.result);
+        imdbCsvReporter.export(null);
     }
 }

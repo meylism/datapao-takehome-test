@@ -19,7 +19,6 @@
         <jacoco.version>0.8.8</jacoco.version>
     </properties>
 
-
     <dependencies>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -64,6 +63,11 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.version}</version>
             <type>maven-plugin</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.9.0</version>
         </dependency>
     </dependencies>
 

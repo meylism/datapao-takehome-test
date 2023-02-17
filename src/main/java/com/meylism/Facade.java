@@ -1,7 +1,7 @@
 package com.meylism;
 
 import com.google.common.base.Preconditions;
-import com.meylism.reporter.Reporter;
+import com.meylism.reporter.FileReporter;
 import lombok.Getter;
 
 /**
@@ -25,5 +25,5 @@ public abstract class Facade {
      * Export results to a specific format
      * @param reporter format-specific reporter
      */
-    public abstract void report(Reporter reporter);
+    public abstract void report(FileReporter reporter);
 }
