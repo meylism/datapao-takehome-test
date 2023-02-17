@@ -13,22 +13,19 @@ import java.io.IOException;
 import java.util.List;
 
 public class ImdbCsvReporter extends FileReporter {
-    private Logger logger = LogManager.getLogger(ImdbCsvReporter.class);
-    private final String[] headers = {"Title", "Number of Ratings", "Number of Oscars", "Original Rating", "New Rating", "Oscar Rating", "Penalized Rating"};
-
-    public ImdbCsvReporter(ScrapeResult result) {
-        super(result);
-    }
+    private final Logger logger = LogManager.getLogger(ImdbCsvReporter.class);
+    private final String[] headers = {"Title", "Number of Ratings", "Number of Oscars", "Original Rating",
+            "New Rating", "Oscar Rating", "Penalized Rating"};
 
     @Override
-    public void export(File file) {
-
-
+    public void export(ScrapeResult result, File file) {
         try {
-            FileWriter out = new FileWriter("datapao.csv");
+            String path = file.getAbsolutePath() + "/datapao.csv";
+            FileWriter out = new FileWriter(path);
+            logger.debug("Exporting results to {}", path);
             CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(headers));
 
-            for (IMDBMovie movie : (List<IMDBMovie>)getResult().getData()) {
+            for (IMDBMovie movie : (List<IMDBMovie>)result.getData()) {
                 printer.printRecord(
                         movie.getTitle(),
                         movie.getNumRating(),
@@ -38,11 +35,12 @@ public class ImdbCsvReporter extends FileReporter {
                         String.format("%.1f", movie.getOscarInfluencedRating()),
                         String.format("%.1f", movie.getPenalizedRating()));
             }
+
+            printer.close();
             out.close();
         } catch (IOException e) {
             logger.error("Couldn't export the results. Exiting: {}", e.getMessage());
             System.exit(-1);
-        } finally {
         }
     }
 }

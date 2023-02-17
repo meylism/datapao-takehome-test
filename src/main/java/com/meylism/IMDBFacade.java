@@ -6,34 +6,27 @@ import com.meylism.processor.IMDBOscarCalculator;
 import com.meylism.processor.IMDBReviewPenalizer;
 import com.meylism.processor.Processor;
 import com.meylism.reporter.FileReporter;
-import com.meylism.reporter.ImdbCsvReporter;
 import com.meylism.scraper.IMDBScraper;
 import com.meylism.scraper.Scraper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.util.*;
 
 public class IMDBFacade extends Facade {
     private final Logger logger = LogManager.getLogger(IMDBFacade.class);
     private final List<Processor> processors = new ArrayList<>(Arrays.asList(new IMDBOscarCalculator(), new IMDBReviewPenalizer()));
     private ScrapeResult result;
 
-    public IMDBFacade(String url) {
-        super(url);
+    public IMDBFacade(String url, FileReporter reporter) {
+        super(url, reporter);
     }
 
     @Override
     public void scrape() {
-        Scraper scraper = new IMDBScraper(getUrl());
+        Scraper scraper = new IMDBScraper(getUrl(), 20);
         result = (ScrapeResult)scraper.scrape();
-
-        List<IMDBMovie> movieList = (List<IMDBMovie>) result.getData();
-        for (IMDBMovie movie : movieList) {
-            System.out.println(movie);
-        }
 
         // process
         for (Processor processor : processors) {
@@ -41,16 +34,13 @@ public class IMDBFacade extends Facade {
             processor.process(result);
             logger.debug("Applied processor: {}", processor.getName());
         }
-
-        for (IMDBMovie movie : movieList) {
-            System.out.println(movie);
-
-        }
     }
 
     @Override
-    public void report(FileReporter reporter) {
-        ImdbCsvReporter imdbCsvReporter = new ImdbCsvReporter(this.result);
-        imdbCsvReporter.export(null);
+    public void report(File file) {
+        Comparator<IMDBMovie> comparator = Comparator.comparingDouble(IMDBMovie::getNewRating).reversed();
+        Collections.sort((List<IMDBMovie>) result.getData(), comparator);
+
+        this.getReporter().export(result, file);
     }
 }

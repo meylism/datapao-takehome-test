@@ -1,22 +1,24 @@
 package com.meylism.scraper;
 
+import com.google.common.base.Preconditions;
 import com.meylism.ds.IMDBMovie;
 import com.meylism.ds.ScrapeResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IMDBScraper extends Scraper {
     private final Logger logger = LogManager.getLogger(IMDBScraper.class);
-    public IMDBScraper(String url) {
+    private Integer numMoviesToFetch;
+    public IMDBScraper(String url, Integer numMoviesToFetch) {
         super(url);
+        Preconditions.checkArgument(numMoviesToFetch >= 0);
+        this.numMoviesToFetch = numMoviesToFetch;
     }
 
     @Override
@@ -25,31 +27,16 @@ public class IMDBScraper extends Scraper {
         Document doc = null;
         List<IMDBMovie> movieList = new ArrayList<>();
 
-        try {
-            logger.debug("Started fetching {}", getUrl());
-            long startTime = System.currentTimeMillis();
-
-            doc = Jsoup.connect(getUrl())
-                    .header("Accept-Language", "en")
-                    .get();
-
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            logger.debug("Finished fetching: took {} milliseconds", elapsedTime);
-            result.setScrapeTime(elapsedTime);
-        } catch (IOException e) {
-            logger.fatal("Can't scrape the provided URL: {}", e.getMessage());
-            System.exit(-1);
-        }
+        doc = fetch(getUrl());
 
         // table
         Elements chart = doc.getElementsByClass("chart");
         // tbody
         Element chartBody = chart.get(0).child(2);
 
-        for(int i=0; i<20; i++) {
+        for(int i=0; i<numMoviesToFetch; i++) {
             movieList.add(processMovie(chartBody.child(i)));
         }
-
 
         // data is a list of movies
         result.setData(movieList);
@@ -93,22 +80,8 @@ public class IMDBScraper extends Scraper {
                 .append(tokens[2])
                 .append("/awards/")
                 .toString();
-        Document doc = null;
 
-        try {
-            logger.debug("Started fetching {}", awardUrl);
-            long startTime = System.currentTimeMillis();
-
-            doc = Jsoup.connect(awardUrl)
-                    .header("Accept-Language", "en")
-                    .get();
-
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            logger.debug("Finished fetching: took {} milliseconds", elapsedTime);
-        } catch (IOException e) {
-            logger.fatal("Can't scrape the provided URL: {}", e.getMessage());
-            System.exit(-1);
-        }
+        Document doc = fetch(awardUrl);
 
         movie.setNumOscar(extractOscarNumber(doc));
     }
